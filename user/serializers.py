@@ -1,8 +1,5 @@
 from rest_framework import serializers
-from django.contrib.auth import get_user_model
-
-
-User = get_user_model()
+from .models import User
 
 
 class UserSerializer(serializers.ModelSerializer):
@@ -13,10 +10,7 @@ class UserSerializer(serializers.ModelSerializer):
 
 
 class UserSignUpSerializer(serializers.ModelSerializer):
-    password = serializers.CharField(
-        write_only=True,
-        style={'input-type': 'password', 'placeholder': 'Password'}
-    )
+    password = serializers.CharField(write_only=True, style={'input-type': 'password'})
 
     class Meta:
         model = User
@@ -25,11 +19,8 @@ class UserSignUpSerializer(serializers.ModelSerializer):
 
 
 class UserSignInSerializer(serializers.ModelSerializer):
-    username = serializers.CharField()
-    password = serializers.CharField(
-        write_only=True,
-        style={'input-type': 'password', 'placeholder': 'Password'}
-    )
+    username = serializers.CharField(max_length=150)
+    password = serializers.CharField(write_only=True, style={'input-type': 'password'})
 
     class Meta:
         model = User
