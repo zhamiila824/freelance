@@ -19,7 +19,7 @@ class TaskDetailView(generics.RetrieveAPIView):
 
 
 class TaskCreateView(generics.CreateAPIView):
-    serializer_class = serializers.TaskSerializer
+    serializer_class = serializers.CreateTaskSerializer
     permission_classes = (IsAuthenticated,)
 
     def post(self, request, *args, **kwargs):
