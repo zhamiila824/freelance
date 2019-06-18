@@ -1,4 +1,3 @@
-from django.shortcuts import render
 from rest_framework.response import Response
 from rest_framework import generics, status
 from rest_framework.permissions import AllowAny, IsAuthenticated
@@ -17,6 +16,13 @@ class TaskDetailView(generics.RetrieveAPIView):
     serializer_class = serializers.TaskSerializer
     permission_classes = (AllowAny,)
 
+    def put(self, request, *args, **kwargs):
+        if request.user.role == 'executor':
+            task = self.get_object()
+            if task.done:
+                return Response({'message': 'Task already done'}, status=status.HTTP_403_FORBIDDEN)
+        return Response({'message': 'Only executors can do tasks'}, status=status.HTTP_403_FORBIDDEN)
+
 
 class TaskCreateView(generics.CreateAPIView):
     serializer_class = serializers.CreateTaskSerializer
@@ -24,13 +30,17 @@ class TaskCreateView(generics.CreateAPIView):
 
     def post(self, request, *args, **kwargs):
         serializer = self.serializer_class(data=request.data)
-        if serializer.is_valid():
-            validated_data = serializer.validated_data
-            models.Task.objects.create(
-                title=validated_data.get('title'),
-                description=validated_data.get('description'),
-                price=validated_data.get('price'),
-                customer=request.user
-            )
-            return Response(status=status.HTTP_201_CREATED)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        if request.user.role == 'customer':
+            if serializer.is_valid():
+                validated_data = serializer.validated_data
+                if validated_data.get('price') > request.user.balance:
+                    return Response({'message': 'Not enough money on balance'}, status=status.HTTP_403_FORBIDDEN)
+                models.Task.objects.create(
+                    title=validated_data.get('title'),
+                    description=validated_data.get('description'),
+                    price=validated_data.get('price'),
+                    customer=request.user
+                )
+                return Response(status=status.HTTP_201_CREATED)
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        return Response({'message': 'Only customers can create tasks'}, status=status.HTTP_403_FORBIDDEN)
