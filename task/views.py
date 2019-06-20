@@ -1,3 +1,4 @@
+
 from rest_framework.response import Response
 from rest_framework import generics, status
 from rest_framework.permissions import AllowAny, IsAuthenticated
@@ -21,6 +22,10 @@ class TaskDetailView(generics.RetrieveAPIView):
             task = self.get_object()
             if task.done:
                 return Response({'message': 'Task already done'}, status=status.HTTP_403_FORBIDDEN)
+            if task.customer.balance < task.price:
+                return Response({'message': 'Customer does not have enough money on balance'}, status=status.HTTP_403_FORBIDDEN)
+            task.customer.pay(task.customer.id, task.price)
+            request.user.get_paid(request.user.id, task.price)
             task.done = True
             task.executor = request.user
             task.save()
