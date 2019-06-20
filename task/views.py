@@ -14,13 +14,17 @@ class TaskListView(generics.ListAPIView):
 class TaskDetailView(generics.RetrieveAPIView):
     queryset = models.Task.objects.all()
     serializer_class = serializers.TaskSerializer
-    permission_classes = (AllowAny,)
+    permission_classes = (IsAuthenticated,)
 
-    def put(self, request, *args, **kwargs):
+    def patch(self, request, *args, **kwargs):
         if request.user.role == 'executor':
             task = self.get_object()
             if task.done:
                 return Response({'message': 'Task already done'}, status=status.HTTP_403_FORBIDDEN)
+            task.done = True
+            task.executor = request.user
+            task.save()
+            return Response({'massage': 'You did task'}, status=status.HTTP_202_ACCEPTED)
         return Response({'message': 'Only executors can do tasks'}, status=status.HTTP_403_FORBIDDEN)
 
 
