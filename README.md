@@ -10,7 +10,7 @@ $ cd freelance
 $ pip install -r requirements.txt
 $ python manage.py runserver
 ```
-Before running serever:
+Before running server:
 1) create .env file in root directory with:
 ```
   SECRET_KEY=your_secret_key
