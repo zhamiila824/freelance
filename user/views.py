@@ -10,7 +10,7 @@ from . import serializers
 class UserListView(generics.ListAPIView):
     queryset = models.User.objects.all()
     serializer_class = serializers.UserSerializer
-    permission_classes = (IsAuthenticated,)
+    permission_classes = (AllowAny,)
 
 
 class UserDetailView(generics.RetrieveAPIView):

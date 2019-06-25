@@ -10,6 +10,7 @@ class User(AbstractUser):
     )
     role = models.CharField(choices=ROLE, max_length=8)
     balance = models.PositiveIntegerField(default=0)
+    email = models.EmailField(unique=True, null=False)
 
     def __str__(self):
         return self.username
