@@ -1,7 +1,7 @@
 # Freelance
 Freelance exchange web-site. Where customers can create tasks and put price. Executors can do task if it is not done and get paid.
 
-#Installation and run
+# Installation and run
 ```
 $ git clone https://github.com/jamilya824/freelance.git
 $ virtualenv venv -p python3
@@ -10,7 +10,7 @@ $ cd freelance
 $ pip install -r requirements.txt
 $ python manage.py runserver
 ```
-Before running serever:
+Before running server:
 1) create .env file in root directory with:
 ```
   SECRET_KEY=your_secret_key
