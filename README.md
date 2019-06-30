@@ -25,3 +25,4 @@ $ python manage.py sqlmigrate task 0001
 3) create superuser(to see admin page):
 ```
 $ python manage.py createsuperuser
+```
