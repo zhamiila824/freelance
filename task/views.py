@@ -23,7 +23,7 @@ class TaskDetailView(generics.RetrieveAPIView):
             if task.done:
                 return Response({'message': 'Task already done'}, status=status.HTTP_403_FORBIDDEN)
             if task.customer.balance < task.price:
-                return Response({'message': 'Customer does not have enough money on balance'}, status=status.HTTP_403_FORBIDDEN)
+                return Response({'message': 'Customer doesnt have enough money on balance'}, status=status.HTTP_403_FORBIDDEN)
             task.customer.pay(task.customer.id, task.price)
             request.user.get_paid(request.user.id, task.price)
             task.done = True

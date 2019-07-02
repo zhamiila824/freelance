@@ -4,7 +4,6 @@ from .models import User
 
 
 class UserTest(TestCase):
-    base_url = 'http://127.0.0.1:8000/api/v1'
 
     def setUp(self):
         User.objects.create(
@@ -37,8 +36,8 @@ class ViewsTest(TestCase):
 
     def test_user_list(self):
         url = '%s/users' % self.base_url
-        r = self.client.get(url)
-        self.assertEqual(r.status_code, status.HTTP_200_OK)
+        view = self.client.get(url)
+        self.assertEqual(view.status_code, status.HTTP_200_OK)
 
     def test_sign_up(self):
         url = '%s/auth/sign_up' % self.base_url
