@@ -39,6 +39,11 @@ class ViewsTest(TestCase):
         view = self.client.get(url)
         self.assertEqual(view.status_code, status.HTTP_200_OK)
 
+    def test_user_detail(self):
+        url = '%s/users/1' % self.base_url
+        view = self.client.get(url)
+        self.assertEqual(view.status_code, status.HTTP_401_UNAUTHORIZED)
+
     def test_sign_up(self):
         url = '%s/auth/sign_up' % self.base_url
         data = {
