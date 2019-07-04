@@ -28,7 +28,7 @@ $ python manage.py createsuperuser
 ```
 
 # URLs
-http://127.0.0.1:8000/api/v1/users - List of users 
+http://127.0.0.1:8000/api/v1/users - List of users  
 http://127.0.0.1:8000/api/v1/auth/sign_in - Login page  
 http://127.0.0.1:8000/api/v1/auth/sign_up - Registration page  
 http://127.0.0.1:8000/api/v1/tasks - List of tasks  
