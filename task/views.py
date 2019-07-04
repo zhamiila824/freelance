@@ -21,9 +21,10 @@ class TaskDetailView(generics.RetrieveAPIView):
         if request.user.role == 'executor':
             task = self.get_object()
             if task.done:
-                return Response({'message': 'Task already done'}, status=status.HTTP_403_FORBIDDEN)
+                return Response({'message': 'Task already done'}, status=status.HTTP_423_LOCKED)
             if task.customer.balance < task.price:
-                return Response({'message': 'Customer doesnt have enough money on balance'}, status=status.HTTP_403_FORBIDDEN)
+                return Response({'message': 'Customer doesnt have enough money on balance'},
+                                status=status.HTTP_406_NOT_ACCEPTABLE)
             task.customer.pay(task.customer.id, task.price)
             request.user.get_paid(request.user.id, task.price)
             task.done = True
@@ -43,7 +44,7 @@ class TaskCreateView(generics.CreateAPIView):
             if serializer.is_valid():
                 validated_data = serializer.validated_data
                 if validated_data.get('price') > request.user.balance:
-                    return Response({'message': 'Not enough money on balance'}, status=status.HTTP_403_FORBIDDEN)
+                    return Response({'message': 'Not enough money on balance'}, status=status.HTTP_406_NOT_ACCEPTABLE)
                 models.Task.objects.create(
                     title=validated_data.get('title'),
                     description=validated_data.get('description'),

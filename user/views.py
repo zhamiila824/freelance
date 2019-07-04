@@ -43,7 +43,7 @@ class SignInView(views.APIView):
             if user:
                 login(request, user)
                 token = jwt_encode_handler(jwt_payload_handler(user))
-                return Response({'token': token})
+                return Response({'token': token}, status.HTTP_200_OK)
             return Response(status=status.HTTP_401_UNAUTHORIZED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 

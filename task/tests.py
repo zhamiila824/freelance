@@ -140,7 +140,7 @@ class ViewsTest(TestCase):
         url = '%s/tasks/1' % self.base_url
         self.client.patch(url)
         view = self.client.patch(url)
-        self.assertEqual(view.status_code, status.HTTP_403_FORBIDDEN)
+        self.assertEqual(view.status_code, status.HTTP_423_LOCKED)
 
     def test_task_detail_balance(self):
         url = '%s/auth/sign_in' % self.base_url
@@ -174,7 +174,7 @@ class ViewsTest(TestCase):
         self.customer.save()
         url = '%s/tasks/1' % self.base_url
         view = self.client.patch(url)
-        self.assertEqual(view.status_code, status.HTTP_403_FORBIDDEN)
+        self.assertEqual(view.status_code, status.HTTP_406_NOT_ACCEPTABLE)
 
     def test_create_task_unauthorized(self):
         url = '%s/tasks/add' % self.base_url
@@ -228,7 +228,7 @@ class ViewsTest(TestCase):
             'price': '1000'
         }
         view = self.client.post(url, data)
-        self.assertEqual(view.status_code, status.HTTP_403_FORBIDDEN)
+        self.assertEqual(view.status_code, status.HTTP_406_NOT_ACCEPTABLE)
 
     def test_create_task(self):
         url = '%s/auth/sign_in' % self.base_url
