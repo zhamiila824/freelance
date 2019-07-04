@@ -114,6 +114,7 @@ htmlcov/
 .tox/
 .nox/
 .coverage
+cover/
 .coverage.*
 .cache
 nosetests.xml
@@ -193,3 +194,9 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+.idea/dataSources.xml
+.idea/freelance.iml
+.idea/misc.xml
+.idea/modules.xml
+.idea/vcs.xml
+templates/

@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django.contrib.sites',
+    'django_nose',
     'rest_framework',
     'rest_framework.authtoken',
     'rest_auth',
@@ -47,6 +48,16 @@ INSTALLED_APPS = [
     'rest_auth.registration',
     'user',
     'task',
+]
+
+# Use nose to run all tests
+TEST_RUNNER = 'django_nose.NoseTestSuiteRunner'
+
+# Tell nose to measure coverage on the 'foo' and 'bar' apps
+NOSE_ARGS = [
+    '--with-coverage',
+    '--cover-package=user,task',
+    '--cover-html'
 ]
 
 MIDDLEWARE = [

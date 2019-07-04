@@ -80,7 +80,7 @@ class ViewsTest(TestCase):
         self.assertEqual(view.status_code, status.HTTP_200_OK)
         self.assertTrue(view.data.get('token'))
 
-    def test_sign_in_bad_request(self):
+    def test_sign_in_unauthorized(self):
         self.user = User.objects.create(
             username='test_user',
             password='12345',
@@ -94,3 +94,17 @@ class ViewsTest(TestCase):
         }
         view = self.client.post(url, data)
         self.assertEqual(view.status_code, status.HTTP_401_UNAUTHORIZED)
+
+    def test_sign_in_bad_request(self):
+        self.user = User.objects.create(
+            username='test_user',
+            password='12345',
+        )
+        self.user.set_password('12345')
+        self.user.save(update_fields=['password'])
+        url = '%s/auth/sign_in' % self.base_url
+        data = {
+            'username': 'testuser'
+        }
+        view = self.client.post(url, data)
+        self.assertEqual(view.status_code, status.HTTP_400_BAD_REQUEST)
