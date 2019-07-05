@@ -30,7 +30,7 @@ class TaskTest(TestCase):
 
     def test_string_representation(self):
         task = Task(title="Web", price=500)
-        self.assertEqual(str(task), (task.title + "    " + str(task.price)))
+        self.assertEqual(str(task), task.title)
 
 
 class ViewsTest(TestCase):

@@ -6,7 +6,7 @@ class Task(models.Model):
     customer = models.ForeignKey(User, on_delete=models.CASCADE)
     title = models.CharField(max_length=100)
     description = models.TextField()
-    price = models.PositiveIntegerField()
+    price = models.DecimalField(max_digits=7, decimal_places=2, default=0)
     date = models.DateTimeField(auto_now_add=True)
     done = models.BooleanField(default=False)
     executor = models.ForeignKey(User, related_name='Executor', on_delete=models.CASCADE, null=True)
