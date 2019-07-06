@@ -1,5 +1,6 @@
 from django.db import models
 from django.db import transaction
+from django.db.models import F
 from django.contrib.auth.models import AbstractUser
 
 
@@ -23,7 +24,7 @@ class User(AbstractUser):
                 .select_for_update()
                 .get(id=id)
             )
-            executor.balance += price
+            executor.balance = F('balance') + price
             executor.save()
         return executor
 
@@ -35,6 +36,6 @@ class User(AbstractUser):
                 .select_for_update()
                 .get(id=id)
             )
-            customer.balance -= price
+            customer.balance = F('balance') - price
             customer.save()
         return customer

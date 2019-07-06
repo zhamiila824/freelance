@@ -17,8 +17,6 @@ Before running server:
 ```
 2) make migrations:
 ```
-$ python manage.py makemigrations
-$ python manage.py migrate
 $ python manage.py sqlmigrate user 0001
 $ python manage.py sqlmigrate task 0001
 ```
