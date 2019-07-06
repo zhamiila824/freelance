@@ -1,8 +1,10 @@
 from django.contrib.auth import authenticate, login
+
 from rest_framework import generics, status, views
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
 from rest_framework_jwt.serializers import jwt_encode_handler, jwt_payload_handler
+
 from . import models
 from . import serializers
 
