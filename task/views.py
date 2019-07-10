@@ -18,7 +18,7 @@ class TaskDetailView(generics.RetrieveAPIView):
     permission_classes = (IsAuthenticated,)
 
     def patch(self, request, *args, **kwargs):
-        if request.user.role == 'executor':
+        if request.user.role == 1:
             task = self.get_object()
             if task.done:
                 return Response({'message': 'Task already done'}, status=status.HTTP_423_LOCKED)
@@ -40,7 +40,7 @@ class TaskCreateView(generics.CreateAPIView):
 
     def post(self, request, *args, **kwargs):
         serializer = self.serializer_class(data=request.data)
-        if request.user.role == 'customer':
+        if request.user.role == 0:
             if serializer.is_valid():
                 validated_data = serializer.validated_data
                 if validated_data.get('price') > request.user.balance:

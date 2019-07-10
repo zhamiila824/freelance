@@ -5,11 +5,13 @@ from django.contrib.auth.models import AbstractUser
 
 
 class User(AbstractUser):
+    CUSTOMER = 0
+    EXECUTOR = 1
     ROLE = (
-        ('customer', 'Customer'),
-        ('executor', 'Executor'),
+        (CUSTOMER, 'Customer'),
+        (EXECUTOR, 'Executor'),
     )
-    role = models.CharField(choices=ROLE, max_length=8)
+    role = models.SmallIntegerField(choices=ROLE, default=1)
     balance = models.DecimalField(max_digits=7, decimal_places=2, default=0)
     email = models.EmailField(unique=True, null=False)
 
