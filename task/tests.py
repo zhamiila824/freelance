@@ -13,14 +13,14 @@ class TaskTest(TestCase):
             username='customer',
             password='12345',
             email="customer@mail.com",
-            role="customer",
+            role=0,
             balance=1000
         )
         self.executor = User.objects.create(
             username='executor',
             password='12345',
             email="executor@mail.com",
-            role="executor",
+            role=1,
             balance=500
         )
         self.task = Task.objects.create(
@@ -52,7 +52,7 @@ class ViewsTest(TestCase):
         url = '%s/auth/sign_in' % self.base_url
         self.user = User.objects.create(
             username='user',
-            role='customer',
+            role=0,
             password='12345',
         )
 
@@ -67,7 +67,7 @@ class ViewsTest(TestCase):
             username='customer',
             password='12345',
             email="customer@mail.com",
-            role="customer",
+            role=0,
             balance=1000
         )
         self.task = Task.objects.create(
@@ -84,7 +84,7 @@ class ViewsTest(TestCase):
         url = '%s/auth/sign_in' % self.base_url
         self.user = User.objects.create(
             username='executor',
-            role='executor',
+            role=1,
             password='12345',
         )
 
@@ -99,7 +99,7 @@ class ViewsTest(TestCase):
             username='customer',
             password='12345',
             email="customer@mail.com",
-            role="customer",
+            role=0,
             balance=1000
         )
         self.task = Task.objects.create(
@@ -116,7 +116,7 @@ class ViewsTest(TestCase):
         url = '%s/auth/sign_in' % self.base_url
         self.user = User.objects.create(
             username='executor',
-            role='executor',
+            role=1,
             password='12345',
         )
         self.user.set_password('12345')
@@ -130,7 +130,7 @@ class ViewsTest(TestCase):
             username='customer',
             password='12345',
             email="customer@mail.com",
-            role="customer",
+            role=0,
             balance=1000
         )
         self.task = Task.objects.create(
@@ -148,7 +148,7 @@ class ViewsTest(TestCase):
         url = '%s/auth/sign_in' % self.base_url
         self.user = User.objects.create(
             username='executor',
-            role='executor',
+            role=1,
             password='12345',
         )
 
@@ -163,7 +163,7 @@ class ViewsTest(TestCase):
             username='customer',
             password='12345',
             email="customer@mail.com",
-            role="customer",
+            role=0,
             balance=10000
         )
         self.task = Task.objects.create(
@@ -187,7 +187,7 @@ class ViewsTest(TestCase):
         url = '%s/auth/sign_in' % self.base_url
         self.user = User.objects.create(
             username='executor',
-            role='executor',
+            role=1,
             password='12345',
         )
 
@@ -211,7 +211,7 @@ class ViewsTest(TestCase):
         url = '%s/auth/sign_in' % self.base_url
         self.user = User.objects.create(
             username='customer',
-            role='customer',
+            role=0,
             password='12345',
             balance=100
         )
@@ -236,7 +236,7 @@ class ViewsTest(TestCase):
         url = '%s/auth/sign_in' % self.base_url
         self.user = User.objects.create(
             username='customer',
-            role='customer',
+            role=0,
             password='12345',
             balance=1000
         )

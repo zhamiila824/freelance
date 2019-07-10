@@ -14,7 +14,7 @@ class UserTest(TestCase):
             first_name="user",
             last_name="customer",
             email="user1@mail.com",
-            role="customer",
+            role=0,
             balance=1000
         )
 
@@ -24,7 +24,7 @@ class UserTest(TestCase):
             first_name="user",
             last_name="executor",
             email="user2@mail.com",
-            role="executor",
+            role=1,
             balance=1000
         )
 
@@ -51,7 +51,7 @@ class ViewsTest(TestCase):
         data = {
             'username': 'test_user', 'password': '123',
             'first_name': 'mira', 'last_name': 'amanturova',
-            'email': 'test@gmail.com', 'role': "customer", 'balance': 1000
+            'email': 'test@gmail.com', 'role': 0, 'balance': 1000
         }
         view = self.client.post(url, data)
         self.assertEqual(view.status_code, status.HTTP_201_CREATED)
@@ -61,7 +61,7 @@ class ViewsTest(TestCase):
         url = '%s/auth/sign_up' % self.base_url
         data = {
             'username': 'test_user', 'first_name': 'mira', 'last_name': 'amanturova',
-            'email': 'test@gmail.com', 'role': "customer", 'balance': 1000
+            'email': 'test@gmail.com', 'role': 0, 'balance': 1000
         }
         view = self.client.post(url, data)
         self.assertEqual(view.status_code, status.HTTP_400_BAD_REQUEST)
