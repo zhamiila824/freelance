@@ -20,10 +20,6 @@ Before running server:
 $ python manage.py sqlmigrate user 0001
 $ python manage.py sqlmigrate task 0001
 ```
-3) create superuser(to see admin page):
-```
-$ python manage.py createsuperuser
-```
 
 # URLs
 http://127.0.0.1:8000/api/v1/users - List of users  
