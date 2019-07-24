@@ -8,6 +8,15 @@ from user.models import User
 
 class TaskTest(TestCase):
     base_url = 'http://127.0.0.1:8000/api/v1'
+    sign_in_url = 'http://127.0.0.1:8000/api/vi/auth/sign_in'
+    executor_data = {
+        'username': 'executor',
+        'password': '12345'
+    }
+    customer_data = {
+        'username': 'customer',
+        'password': '12345'
+    }
 
     def setUp(self):
         self.customer = User.objects.create(
@@ -48,12 +57,7 @@ class TaskTest(TestCase):
         self.assertEqual(view.status_code, status.HTTP_401_UNAUTHORIZED)
 
     def test_create_task_executor(self):
-        url = '%s/auth/sign_in' % self.base_url
-        data = {
-            'username': 'executor',
-            'password': '12345'
-        }
-        self.client.post(url, data)
+        self.client.post(self.sign_in_url, self.executor_data)
         url = '%s/tasks/add' % self.base_url
         data = {
             'title': 'Web site',
@@ -64,12 +68,7 @@ class TaskTest(TestCase):
         self.assertEqual(view.status_code, status.HTTP_403_FORBIDDEN)
 
     def test_create_task_balance(self):
-        url = '%s/auth/sign_in' % self.base_url
-        data = {
-            'username': 'customer',
-            'password': '12345'
-        }
-        self.client.post(url, data)
+        self.client.post(self.sign_in_url, self.customer_data)
         url = '%s/tasks/add' % self.base_url
         data = {
             'title': 'Web site',
@@ -80,12 +79,7 @@ class TaskTest(TestCase):
         self.assertEqual(view.status_code, status.HTTP_406_NOT_ACCEPTABLE)
 
     def test_create_task(self):
-        url = '%s/auth/sign_in' % self.base_url
-        data = {
-            'username': 'customer',
-            'password': '12345'
-        }
-        self.client.post(url, data)
+        self.client.post(self.sign_in_url, self.customer_data)
         url = '%s/tasks/add' % self.base_url
         data = {
             'title': 'Web site',
@@ -101,48 +95,20 @@ class TaskTest(TestCase):
         self.assertEqual(view.status_code, status.HTTP_401_UNAUTHORIZED)
 
     def test_task_detail_customer(self):
-        url = '%s/auth/sign_in' % self.base_url
-        data = {
-            'username': 'customer',
-            'password': '12345'
-        }
-        self.client.post(url, data)
+        self.client.post(self.sign_in_url, self.customer_data)
         url = '%s/tasks/1' % self.base_url
         view = self.client.patch(url)
         self.assertEqual(view.status_code, status.HTTP_403_FORBIDDEN)
 
     def test_task_detail_executor(self):
-        url = '%s/auth/sign_in' % self.base_url
-        data = {
-            'username': 'executor',
-            'password': '12345'
-        }
-        self.client.post(url, data)
+        self.client.post(self.sign_in_url, self.executor_data)
         url = '%s/tasks/1' % self.base_url
         view = self.client.patch(url)
         self.assertEqual(view.status_code, status.HTTP_202_ACCEPTED)
 
     def test_task_detail_done(self):
-        url = '%s/auth/sign_in' % self.base_url
-        data = {
-            'username': 'executor',
-            'password': '12345'
-        }
-        self.client.post(url, data)
+        self.client.post(self.sign_in_url, self.executor_data)
         url = '%s/tasks/1' % self.base_url
         self.client.patch(url)
         view = self.client.patch(url)
         self.assertEqual(view.status_code, status.HTTP_423_LOCKED)
-
-    def test_task_detail_balance(self):
-        self.customer.balance = 10
-        self.customer.save(update_fields=['balance'])
-        url = '%s/auth/sign_in' % self.base_url
-        data = {
-            'username': 'executor',
-            'password': '12345'
-        }
-        self.client.post(url, data)
-        url = '%s/tasks/1' % self.base_url
-        view = self.client.patch(url)
-        self.assertEqual(view.status_code, status.HTTP_406_NOT_ACCEPTABLE)

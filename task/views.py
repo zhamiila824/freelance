@@ -1,3 +1,5 @@
+from django.db.models import F
+
 from rest_framework.response import Response
 from rest_framework import generics, status
 from rest_framework.permissions import AllowAny, IsAuthenticated
@@ -22,9 +24,6 @@ class TaskDetailView(generics.RetrieveAPIView):
             task = self.get_object()
             if task.done:
                 return Response({'message': 'Task already done'}, status=status.HTTP_423_LOCKED)
-            if task.customer.balance < task.price:
-                return Response({'message': 'Customer doesnt have enough money on balance'},
-                                status=status.HTTP_406_NOT_ACCEPTABLE)
             task.customer.pay(task.customer.id, task.price)
             request.user.get_paid(request.user.id, task.price)
             task.done = True
@@ -43,7 +42,7 @@ class TaskCreateView(generics.CreateAPIView):
         if request.user.role == 0:
             if serializer.is_valid():
                 validated_data = serializer.validated_data
-                if validated_data.get('price') > request.user.balance:
+                if validated_data.get('price') > (request.user.balance - request.user.promised_balance):
                     return Response({'message': 'Not enough money on balance'}, status=status.HTTP_406_NOT_ACCEPTABLE)
                 models.Task.objects.create(
                     title=validated_data.get('title'),
@@ -51,6 +50,8 @@ class TaskCreateView(generics.CreateAPIView):
                     price=validated_data.get('price'),
                     customer=request.user
                 )
+                request.user.promised_balance = F('promised_balance') + validated_data.get('price')
+                request.user.save()
                 return Response(status=status.HTTP_201_CREATED)
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
         return Response({'message': 'Only customers can create tasks'}, status=status.HTTP_403_FORBIDDEN)

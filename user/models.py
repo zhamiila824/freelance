@@ -13,6 +13,7 @@ class User(AbstractUser):
     )
     role = models.SmallIntegerField(choices=ROLE, default=1)
     balance = models.DecimalField(max_digits=7, decimal_places=2, default=0)
+    promised_balance = models.DecimalField(max_digits=7, decimal_places=2, default=0)
     email = models.EmailField(unique=True, null=False)
 
     def __str__(self):
@@ -39,5 +40,6 @@ class User(AbstractUser):
                 .get(id=id)
             )
             customer.balance = F('balance') - price
+            customer.promised_balance = F('promised_balance') - price
             customer.save()
         return customer
