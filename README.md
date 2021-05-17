@@ -3,7 +3,7 @@ Freelance exchange web-site. Where customers can create tasks and put price. Exe
 
 # Installation and run
 ```
-$ git clone https://github.com/jamilya824/freelance.git
+$ git clone https://github.com/zhamiila824/freelance.git
 $ virtualenv venv -p python3
 $ source venv/bin/activate
 $ cd freelance
